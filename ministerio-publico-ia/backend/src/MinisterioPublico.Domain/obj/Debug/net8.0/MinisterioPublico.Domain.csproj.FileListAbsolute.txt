@@ -1,0 +1,13 @@
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\bin\Debug\net8.0\MinisterioPublico.Domain.deps.json
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\bin\Debug\net8.0\MinisterioPublico.Domain.dll
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\bin\Debug\net8.0\MinisterioPublico.Domain.pdb
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\bin\Debug\net8.0\MinisterioPublico.Domain.xml
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\obj\Debug\net8.0\MinisterioPublico.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\obj\Debug\net8.0\MinisterioPublico.Domain.AssemblyInfoInputs.cache
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\obj\Debug\net8.0\MinisterioPublico.Domain.AssemblyInfo.cs
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\obj\Debug\net8.0\MinisterioPublico.Domain.csproj.CoreCompileInputs.cache
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\obj\Debug\net8.0\MinisterioPublico.Domain.dll
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\obj\Debug\net8.0\refint\MinisterioPublico.Domain.dll
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\obj\Debug\net8.0\MinisterioPublico.Domain.xml
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\obj\Debug\net8.0\MinisterioPublico.Domain.pdb
+C:\Users\ACER\Downloads\ministerio-publico-ia\ministerio-publico-ia\backend\src\MinisterioPublico.Domain\obj\Debug\net8.0\ref\MinisterioPublico.Domain.dll

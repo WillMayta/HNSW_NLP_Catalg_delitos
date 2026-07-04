@@ -1,0 +1,15 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+sentence-transformers==3.1.1
+hnswlib==0.8.0
+numpy==1.26.4
+pandas==2.2.2
+openpyxl==3.1.5
+scikit-learn==1.5.1
+python-multipart==0.0.9
+
+# Nota: sentence-transformers requiere conexión a internet (huggingface.co)
+# en la primera ejecución para descargar el modelo all-MiniLM-L6-v2 (~90 MB).
+# scikit-learn se usa únicamente como motor de respaldo (TF-IDF) si no hay
+# conectividad a Hugging Face; no es necesario en producción si se garantiza
+# el acceso a internet o se pre-descarga el modelo.

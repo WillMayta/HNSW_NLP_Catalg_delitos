@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MinisterioPublico.API</name>
+    </assembly>
+    <members>
+        <member name="M:MinisterioPublico.API.Controllers.AgrupamientoController.GenerarPropuestas(System.Double,System.Threading.CancellationToken)">
+            <summary>
+            Ejecuta el Motor Inteligente sobre todos los delitos normalizados
+            que aún no han sido agrupados, generando PROPUESTAS de agrupación
+            (nunca asigna un delito genérico definitivo de forma automática).
+            </summary>
+        </member>
+        <member name="M:MinisterioPublico.API.Controllers.AgrupamientoController.ObtenerPendientes(System.Threading.CancellationToken)">
+            <summary>Lista las propuestas de agrupamiento pendientes de validación jurídica.</summary>
+        </member>
+        <member name="M:MinisterioPublico.API.Controllers.AutenticacionController.Login(MinisterioPublico.Application.Services.LoginRequestDto,System.Threading.CancellationToken)">
+            <summary>Inicia sesión y devuelve un token JWT válido por 8 horas.</summary>
+        </member>
+        <member name="M:MinisterioPublico.API.Controllers.BusquedaController.Buscar(MinisterioPublico.Application.DTOs.BusquedaInteligenteRequestDto,System.Threading.CancellationToken)">
+            <summary>
+            Búsqueda inteligente: ingresa una denominación de delito y devuelve
+            los registros más similares (vía índice HNSW), con porcentaje de
+            similitud, familia jurídica y delito de catálogo asociado si ya
+            fue validado previamente.
+            </summary>
+        </member>
+        <member name="M:MinisterioPublico.API.Controllers.DashboardController.ObtenerIndicadores(System.Threading.CancellationToken)">
+            <summary>
+            Indicadores institucionales: cantidad de delitos, variantes
+            detectadas, delitos con mayor inconsistencia, fiscalías con mayor
+            variabilidad, evolución temporal y porcentaje de consolidación.
+            </summary>
+        </member>
+        <member name="M:MinisterioPublico.API.Controllers.NormalizacionController.CargaMasiva(Microsoft.AspNetCore.Http.IFormFile,System.Threading.CancellationToken)">
+            <summary>
+            Carga masiva de delitos históricos desde Excel (.xlsx) o CSV.
+            Ejecuta automáticamente: normalización léxica + generación de
+            embeddings para cada registro cargado.
+            </summary>
+        </member>
+        <member name="M:MinisterioPublico.API.Controllers.NormalizacionController.NormalizarRegistro(System.Guid,System.Threading.CancellationToken)">
+            <summary>Normaliza un único registro ya cargado (útil para reprocesar casos puntuales).</summary>
+        </member>
+        <member name="M:MinisterioPublico.API.Controllers.ValidacionJuridicaController.Validar(MinisterioPublico.Application.DTOs.ValidarPropuestaRequestDto,System.Threading.CancellationToken)">
+            <summary>
+            Único endpoint del sistema que consolida el Catálogo Penal.
+            Requiere obligatoriamente el rol EspecialistaJuridico o Administrador.
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.API.SeedData">
+             <summary>
+             Datos semilla mínimos para que el sistema sea utilizable en una primera
+             ejecución: roles base, familias delictivas iniciales (según títulos del
+             Código Penal peruano) y un usuario administrador.
+            
+             IMPORTANTE: la contraseña por defecto debe cambiarse inmediatamente en
+             un entorno real. Aquí se usa únicamente para fines de demostración.
+             </summary>
+        </member>
+    </members>
+</doc>

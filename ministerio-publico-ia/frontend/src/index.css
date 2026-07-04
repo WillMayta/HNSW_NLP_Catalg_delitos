@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background-color: #0D1117;
+}
+
+body {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(201,118,44,0.05), transparent 45%),
+    radial-gradient(circle at 90% 30%, rgba(61,111,168,0.05), transparent 40%);
+}
+
+/* Folio / sello: borde lateral tipo expediente, usado en tarjetas clave */
+.borde-folio {
+  border-left: 3px solid #C9762C;
+}
+
+.fuente-folio {
+  font-family: "IBM Plex Mono", monospace;
+  letter-spacing: 0.02em;
+}
+
+/* Scrollbar institucional discreto */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #0D1117; }
+::-webkit-scrollbar-thumb { background: #2A3140; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #3a4256; }
+
+@keyframes pulso-sello {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.pulso-sello { animation: pulso-sello 2s ease-in-out infinite; }

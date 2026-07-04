@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MinisterioPublico.Domain</name>
+    </assembly>
+    <members>
+        <member name="T:MinisterioPublico.Domain.Entities.FamiliaDelictiva">
+            <summary>
+            Agrupación jurídica de alto nivel a la que pertenecen varios delitos
+            genéricos relacionados (ej. "Delitos contra la vida, el cuerpo y la salud").
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Entities.DelitoCatalogo">
+            <summary>
+            Delito genérico consolidado del Catálogo Penal. Construido
+            progresivamente por el especialista jurídico a partir de las
+            propuestas de agrupamiento generadas por el motor inteligente.
+            </summary>
+        </member>
+        <member name="P:MinisterioPublico.Domain.Entities.DelitoCatalogo.ArticuloPrincipal">
+            <summary>Artículo principal del Código Penal asociado (ej. "Art. 376").</summary>
+        </member>
+        <member name="P:MinisterioPublico.Domain.Entities.DelitoCatalogo.LeyesComplementariasJson">
+            <summary>Leyes complementarias asociadas, serializadas como JSON.</summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Entities.Variante">
+            <summary>
+            Vincula un DelitoNormalizado (una denominación específica encontrada en
+            los registros históricos) con el DelitoCatalogo genérico al que
+            pertenece, tras la validación jurídica correspondiente.
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Entities.DelitoNormalizado">
+            <summary>
+            Resultado de aplicar el Motor de Normalización Léxica sobre un
+            DelitoOriginal. Conserva trazabilidad completa de qué reglas se
+            aplicaron, para auditoría y para poder reprocesar si las reglas cambian.
+            </summary>
+        </member>
+        <member name="P:MinisterioPublico.Domain.Entities.DelitoNormalizado.ReglasAplicadasJson">
+            <summary>Reglas de normalización aplicadas, serializadas como JSON (ej. ["mayusculas","eliminacion_articulos_ley"]).</summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Entities.DelitoOriginal">
+            <summary>
+            Representa un registro histórico de delito tal como fue ingresado
+            originalmente en el sistema del Ministerio Público, sin ninguna
+            transformación. Esta entidad nunca se modifica tras su carga: el texto
+            original siempre se conserva como evidencia de auditoría y como fuente
+            de verdad legal del expediente.
+            </summary>
+        </member>
+        <member name="P:MinisterioPublico.Domain.Entities.DelitoOriginal.IdUnicoCaso">
+            <summary>Identificador único del caso tal como llega del sistema fuente (id_unico).</summary>
+        </member>
+        <member name="P:MinisterioPublico.Domain.Entities.DelitoOriginal.TextoOriginal">
+            <summary>Denominación original del delito tal como fue registrada (de_mat_deli). NUNCA se modifica.</summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Entities.Embedding">
+            <summary>
+            Vector de embedding generado por el motor NLP (Sentence Transformers,
+            modelo all-MiniLM-L6-v2) para un DelitoNormalizado. El vector en sí se
+            almacena serializado (float[] -> bytes) porque PostgreSQL + pgvector
+            maneja el tipo `vector` nativamente vía Npgsql; aquí se modela como
+            arreglo de floats para que el ORM (EF Core) pueda mapearlo con el
+            proveedor `Npgsql.EntityFrameworkCore.PostgreSQL` + pgvector.
+            </summary>
+        </member>
+        <member name="P:MinisterioPublico.Domain.Entities.Embedding.Vector">
+            <summary>Vector de 384 dimensiones (all-MiniLM-L6-v2). Mapeado a tipo `vector(384)` en PostgreSQL/pgvector.</summary>
+        </member>
+        <member name="P:MinisterioPublico.Domain.Entities.Embedding.IdEnIndiceHnsw">
+            <summary>Posición/etiqueta del vector dentro del índice HNSW vigente, para soportar actualización puntual.</summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Entities.RegistroAuditoria">
+            <summary>
+            Registro de auditoría genérico para trazabilidad de todas las acciones
+            relevantes del sistema (creación, edición, validación, eliminación).
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Entities.ParametroNormalizacion">
+            <summary>
+            Parámetro configurable del Motor de Normalización (palabras irrelevantes,
+            abreviaturas, patrones de artículos de ley, etc.) para que el motor sea
+            ajustable sin recompilar el sistema.
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Entities.HistorialCambioCatalogo">
+            <summary>
+            Historial de cambios sobre el Catálogo Penal, para trazabilidad
+            específica de la evolución de cada delito genérico consolidado.
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Entities.LoteCarga">
+            <summary>Representa una carga masiva (Excel/CSV) de delitos históricos.</summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Entities.PropuestaAgrupamiento">
+            <summary>
+            Propuesta de agrupación generada automáticamente por el Motor de
+            Agrupamiento Inteligente. El sistema NUNCA asigna un delito genérico
+            definitivo por sí mismo: esta entidad representa una sugerencia que
+            debe pasar obligatoriamente por ValidacionJuridica antes de afectar
+            el Catálogo Penal.
+            </summary>
+        </member>
+        <member name="P:MinisterioPublico.Domain.Entities.PropuestaAgrupamiento.DelitosNormalizadosIncluidosJson">
+            <summary>IDs de DelitoNormalizado incluidos en la propuesta, serializados como JSON.</summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Entities.ValidacionJuridica">
+            <summary>
+            Registro de la decisión tomada por un especialista jurídico sobre una
+            PropuestaAgrupamiento. Cada validación retroalimenta el sistema
+            (aprendizaje continuo) y puede disparar reconstrucción del índice HNSW.
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Interfaces.IMotorInteligenteClient">
+            <summary>
+            Puerto de salida hacia el microservicio de Inteligencia Artificial
+            (Python: normalización, embeddings, índice HNSW, agrupamiento).
+            La implementación concreta (HttpClient) vive en Infraestructura,
+            manteniendo el dominio agnóstico de cómo se comunica con el motor IA.
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Interfaces.IRepositorioGenerico`1">
+            <summary>
+            Contrato genérico de repositorio (Repository Pattern). Las
+            implementaciones concretas viven en la capa de Infraestructura,
+            manteniendo el Dominio libre de dependencias de EF Core / Npgsql.
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Domain.Interfaces.IDashboardQueryRepository">
+            <summary>
+            Puerto de solo-lectura para consultas analíticas agregadas (Dashboard).
+            Se separa deliberadamente del resto de repositorios transaccionales
+            (aplicación pragmática de CQRS): las lecturas analíticas no necesitan
+            pasar por el modelo de escritura ni por Unit of Work.
+            </summary>
+        </member>
+    </members>
+</doc>

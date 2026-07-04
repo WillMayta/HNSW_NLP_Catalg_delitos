@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MinisterioPublico.Infrastructure</name>
+    </assembly>
+    <members>
+        <member name="T:MinisterioPublico.Infrastructure.ExternalServices.MotorInteligenteHttpClient">
+            <summary>
+            Cliente HTTP hacia el microservicio Python (FastAPI) que implementa el
+            Motor de Normalización, el Motor NLP (Sentence Transformers) y el
+            Motor Vectorial HNSW. La URL base se configura vía appsettings.json
+            ("MotorInteligente:BaseUrl") e inyección de IHttpClientFactory.
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Infrastructure.Persistence.MinisterioPublicoDbContext">
+             <summary>
+             Contexto de Entity Framework Core. Proveedor: Npgsql (PostgreSQL).
+             Para producción, instalar el paquete `Pgvector.EntityFrameworkCore`
+             adicionalmente y mapear Embedding.Vector como tipo `vector(384)` para
+             aprovechar el índice HNSW nativo de la extensión pgvector:
+            
+               modelBuilder.Entity&lt;Embedding&gt;()
+                   .Property(e => e.Vector)
+                   .HasColumnType("vector(384)");
+            
+               // Migración SQL adicional:
+               CREATE EXTENSION IF NOT EXISTS vector;
+               CREATE INDEX idx_embeddings_hnsw ON embeddings
+                   USING hnsw (vector vector_cosine_ops);
+             </summary>
+        </member>
+    </members>
+</doc>

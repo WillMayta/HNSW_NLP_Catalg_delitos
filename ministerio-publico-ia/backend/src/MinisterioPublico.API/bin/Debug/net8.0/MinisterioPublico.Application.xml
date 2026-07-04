@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MinisterioPublico.Application</name>
+    </assembly>
+    <members>
+        <member name="T:MinisterioPublico.Application.DTOs.ResultadoValidacionDto">
+            <summary>Resultado de procesar una validación jurídica sobre una propuesta de agrupamiento.</summary>
+        </member>
+        <member name="M:MinisterioPublico.Application.DTOs.ResultadoValidacionDto.#ctor(System.Boolean,System.String,MinisterioPublico.Application.DTOs.DelitoCatalogoDto)">
+            <summary>Resultado de procesar una validación jurídica sobre una propuesta de agrupamiento.</summary>
+        </member>
+        <member name="T:MinisterioPublico.Application.Services.AgrupamientoService">
+            <summary>
+            Orquesta el Motor Inteligente de Agrupamiento. Por diseño explícito del
+            sistema (ver documento de arquitectura), este servicio JAMÁS asigna un
+            delito genérico definitivo: únicamente persiste PropuestaAgrupamiento en
+            estado "PendienteValidacion". La consolidación real ocurre solo a través
+            de IValidacionJuridicaService, ejecutada por un usuario con el rol
+            EspecialistaJuridico.
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Application.Services.AutenticacionService">
+            <summary>
+            Autenticación basada en JWT. La contraseña se valida con BCrypt
+            (hash + salt). El token incluye los roles del usuario como claims para
+            que [Authorize(Roles = "...")] funcione directamente en los controladores.
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Application.Services.BusquedaInteligenteService">
+            <summary>
+            Implementa el flujo "Búsqueda Vectorial" del pipeline: el fiscal o
+            analista ingresa una denominación de delito y el sistema devuelve los
+            registros más similares (vía HNSW), junto con la familia jurídica y el
+            delito de catálogo ya consolidado si la variante fue previamente
+            validada por un especialista.
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Application.Services.DashboardService">
+             <summary>
+             Calcula los indicadores institucionales de calidad del dato que se
+             muestran en el Dashboard: cantidad de delitos, variantes detectadas,
+             delitos con mayor inconsistencia, fiscalías con mayor variabilidad,
+             evolución temporal y porcentaje de consolidación.
+            
+             Nota de diseño (CQRS pragmático): las lecturas analíticas agregadas se
+             resuelven a través de IDashboardQueryRepository, un puerto de solo
+             lectura definido en el Dominio e implementado en Infraestructura con
+             consultas optimizadas (EF Core + LINQ -> SQL agregado). Esto evita que
+             la capa de Aplicación dependa de Infraestructura, preservando la regla
+             de dependencias de Clean Architecture (las flechas apuntan hacia adentro).
+             </summary>
+        </member>
+        <member name="T:MinisterioPublico.Application.Services.NormalizacionService">
+            <summary>
+            Orquesta el pipeline: Carga histórica -> Motor de Normalización Léxica
+            -> Generación de Embeddings -> Inserción en el Índice HNSW.
+            La normalización en sí (reglas léxicas) se delega siempre al
+            microservicio Python vía IMotorInteligenteClient, para que exista una
+            única fuente de verdad de las reglas (evita duplicar lógica en dos
+            lenguajes y que diverjan con el tiempo).
+            </summary>
+        </member>
+        <member name="T:MinisterioPublico.Application.Services.ValidacionJuridicaService">
+            <summary>
+            Único punto del sistema autorizado a consolidar el Catálogo Penal.
+            Recibe la decisión de un especialista jurídico sobre una
+            PropuestaAgrupamiento y, según el caso:
+              - Aprobar: crea o reutiliza un DelitoCatalogo y asocia las Variantes.
+              - Rechazar: descarta la propuesta, queda como antecedente de auditoría.
+              - AprobarConModificaciones: igual que Aprobar pero con el nombre
+                genérico final corregido por el especialista.
+            Cada validación queda registrada (Aprendizaje Continuo) para
+            retroalimentar futuras propuestas del motor de IA.
+            </summary>
+        </member>
+    </members>
+</doc>
